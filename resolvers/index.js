@@ -67,14 +67,17 @@ const resolvers = {
         throw new Error("Incorrect password");
       }
 
-      return jsonwebtoken.sign(
-        {
-          id: user.id,
-          email: user.email
-        },
-        process.env.JWT_SECRET,
-        { expiresIn: "1y" }
-      );
+      return {
+        token: jsonwebtoken.sign(
+          {
+            id: user.id,
+            email: user.email
+          },
+          process.env.JWT_SECRET,
+          { expiresIn: "1y" }
+        ),
+        user
+      };
     },
 
     async editUser(

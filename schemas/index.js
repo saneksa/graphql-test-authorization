@@ -8,6 +8,11 @@ const typeDefs = gql`
     email: String!
   }
 
+  type Login {
+    token: String
+    user: User
+  }
+
   type Query {
     allUsers: [User]!
     userById(id: Int!): User
@@ -20,7 +25,8 @@ const typeDefs = gql`
       email: String!
       password: String!
     ): String
-    login(email: String!, password: String!): String
+    login(email: String!, password: String!): Login
+
     editUser(
       id: Int!
       email: String!
