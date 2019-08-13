@@ -21,7 +21,15 @@ const resolvers = {
       if (!userById) {
         throw new Error("No user with that id");
       }
+
       return userById;
+    },
+    async currentUser(root, {}, { user }) {
+      if (!user) {
+        throw new Error("You are not authenticated!");
+      }
+
+      return user;
     }
   },
 
