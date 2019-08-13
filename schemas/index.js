@@ -13,10 +13,24 @@ const typeDefs = gql`
     user: User
   }
 
+  type Process {
+    id: String
+    name: String
+		numberOfExecutions: String
+		averageLeadTime: String
+		averageActiveTime: String
+		employeesInvolvedProcess: String
+		numberOfScenarios: String
+		start: String
+		end: String
+		loading: String
+  }
+
   type Query {
     allUsers: [User]!
     userById(id: Int!): User
-    currentUser: User
+    currentUser: User,
+    processList:[Process]!
   }
 
   type Mutation {

@@ -1,6 +1,7 @@
 const { User } = require("../models");
 const bcrypt = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
+
 require("dotenv").config();
 
 const checkAuthenticated = async user => {
@@ -40,6 +41,13 @@ const resolvers = {
       const currentUser = await User.findById(user.id);
 
       return currentUser;
+    },
+    async processList(root, {}, {user}) {
+      await checkAuthenticated(user);
+
+      const jsonData = require('./processesList.json');
+
+      return jsonData
     }
   },
 
