@@ -3,22 +3,29 @@ const bcrypt = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
 require("dotenv").config();
 
-const checkAuthenticated = user => {
+const checkAuthenticated = async user => {
   if (!user) {
     throw new Error("You are not authenticated!");
+  } else {
+   const usr = await User.findById(user.id)
+   if(!usr) {
+    throw new Error("invalid token")
+   }
+    
   }
 };
 
 const resolvers = {
   Query: {
     async allUsers(root, args, { user }) {
-      checkAuthenticated(user);
+
+      await checkAuthenticated(user);
       return User.all();
     },
     async userById(root, { id }, { user }) {
-      checkAuthenticated(user);
 
-      const userById = await User.findByPk(id);
+      await checkAuthenticated(user);
+      const userById = await User.findById(id);
 
       if (!userById) {
         throw new Error("No user with that id");
@@ -27,7 +34,8 @@ const resolvers = {
       return userById;
     },
     async currentUser(root, {}, { user }) {
-      checkAuthenticated(user);
+
+      await checkAuthenticated(user);
 
       const currentUser = await User.findById(user.id);
 
@@ -95,7 +103,7 @@ const resolvers = {
       { id, email, firstName, secondName, password },
       { user }
     ) {
-      checkAuthenticated(user);
+      await checkAuthenticated(user);
 
       if (!email.includes("@")) {
         throw new Error("invalid email");
