@@ -27,6 +27,12 @@ const resolvers = {
 
   Mutation: {
     async signup(root, { firstName, secondName, email, password }) {
+      const userWithEmail = await User.findOne({ where: { email } });
+
+      if (userWithEmail) {
+        throw new Error("This email is already registered.");
+      }
+
       const user = await User.create({
         firstName,
         secondName,
