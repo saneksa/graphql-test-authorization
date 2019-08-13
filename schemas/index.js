@@ -16,14 +16,14 @@ const typeDefs = gql`
   type Process {
     id: String
     name: String
-		numberOfExecutions: String
-		averageLeadTime: String
-		averageActiveTime: String
-		employeesInvolvedProcess: String
-		numberOfScenarios: String
-		start: String
-		end: String
-		loading: String
+		numberOfExecutions: Int
+		averageLeadTime: Int
+		averageActiveTime: Int
+		employeesInvolvedProcess: Int
+		numberOfScenarios: Int
+		start: Int
+		end: Int
+		loading: Int
   }
 
   type Query {
