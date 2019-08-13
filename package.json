@@ -1,0 +1,27 @@
+{
+  "name": "graphql-authorization",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "Chimezie Enyinnaya",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^2.1.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^6.0.0",
+    "express": "^4.16.3",
+    "express-jwt": "^5.3.1",
+    "graphql": "^14.0.2",
+    "jsonwebtoken": "^8.3.0",
+    "sequelize": "^4.39.0",
+    "sqlite3": "^4.0.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.4",
+    "sequelize-cli": "^4.1.1"
+  }
+}
