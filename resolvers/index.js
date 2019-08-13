@@ -29,7 +29,9 @@ const resolvers = {
     async currentUser(root, {}, { user }) {
       checkAuthenticated(user);
 
-      return user;
+      const currentUser = await User.findById(user.id);
+
+      return currentUser;
     }
   },
 
@@ -99,7 +101,7 @@ const resolvers = {
         throw new Error("invalid email");
       }
 
-      const userById = await User.findByPk(id);
+      const userById = await User.findById(id);
 
       if (!userById) {
         throw new Error("No user found");
@@ -109,7 +111,7 @@ const resolvers = {
         email,
         firstName,
         secondName,
-        password: await bcrypt.hash(password, 10)
+        password: password ? await bcrypt.hash(password, 10) : undefined
       });
 
       return userById;
