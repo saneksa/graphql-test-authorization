@@ -3,18 +3,20 @@ const bcrypt = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
 require("dotenv").config();
 
+const checkAuthenticated = user => {
+  if (!user) {
+    throw new Error("You are not authenticated!");
+  }
+};
+
 const resolvers = {
   Query: {
     async allUsers(root, args, { user }) {
-      if (!user) {
-        throw new Error("You are not authenticated!");
-      }
+      checkAuthenticated(user);
       return User.all();
     },
     async userById(root, { id }, { user }) {
-      if (!user) {
-        throw new Error("You are not authenticated!");
-      }
+      checkAuthenticated(user);
 
       const userById = await User.findByPk(id);
 
@@ -25,9 +27,7 @@ const resolvers = {
       return userById;
     },
     async currentUser(root, {}, { user }) {
-      if (!user) {
-        throw new Error("You are not authenticated!");
-      }
+      checkAuthenticated(user);
 
       return user;
     }
@@ -93,9 +93,7 @@ const resolvers = {
       { id, email, firstName, secondName, password },
       { user }
     ) {
-      if (!user) {
-        throw new Error("You are not authenticated!");
-      }
+      checkAuthenticated(user);
 
       if (!email.includes("@")) {
         throw new Error("invalid email");
