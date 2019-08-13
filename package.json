@@ -1,5 +1,5 @@
 {
-  "name": "graphql-authorization",
+  "name": "graphql-test-server",
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
@@ -7,7 +7,7 @@
     "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "Chimezie Enyinnaya",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "apollo-server-express": "^2.8.1",
@@ -17,11 +17,11 @@
     "express-jwt": "^5.3.1",
     "graphql": "^14.4.2",
     "jsonwebtoken": "^8.5.1",
-    "sequelize": "^5.13.1",
+    "sequelize": "=4.39.0",
     "sqlite3": "^4.0.9"
   },
   "devDependencies": {
     "nodemon": "^1.19.1",
-    "sequelize-cli": "^5.5.0"
+    "sequelize-cli": "=4.1.1"
   }
 }
