@@ -107,7 +107,12 @@ const resolvers = {
         throw new Error("No user found");
       }
 
-      await userById.update({ email, firstName, secondName, password });
+      await userById.update({
+        email,
+        firstName,
+        secondName,
+        password: await bcrypt.hash(password, 10)
+      });
 
       return userById;
     }
