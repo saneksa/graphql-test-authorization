@@ -1,4 +1,4 @@
-# graphql-authorization
+# graphql test server
 
 ## Getting Started
 
