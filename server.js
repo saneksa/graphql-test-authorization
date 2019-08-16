@@ -4,10 +4,13 @@ const jwt = require("express-jwt");
 require("dotenv").config();
 const typeDefs = require("./schemas");
 const resolvers = require("./resolvers");
+const formatError = require("./errors");
 
 const port = 4000;
 const path = "/api";
 const app = express();
+
+const errorName = formatError.errorName;
 
 app.use(
   path,
@@ -21,8 +24,12 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => ({
-    user: req.user
-  })
+    user: req.user,
+    errorName
+  }),
+  formatError: err => {
+    return formatError.getError(err);
+  }
 });
 
 server.applyMiddleware({ app, path });

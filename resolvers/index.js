@@ -3,42 +3,50 @@ const bcrypt = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
 require("dotenv").config();
 
-const checkAuthenticated = user => {
-  if (!user) {
-    throw new Error("You are not authenticated!");
-  }
+const errorHandler = error => {
+  throw new Error(error);
 };
 
 const resolvers = {
   Query: {
-    async allUsers(root, args, { user }) {
-      checkAuthenticated(user);
+    async allUsers(root, args, { user, errorName }) {
+      if (!user) {
+        errorHandler(errorName.UNAUTHORIZED);
+      }
       return User.all();
     },
-    async userById(root, { id }, { user }) {
-      checkAuthenticated(user);
+    async userById(root, { id }, { user, errorName }) {
+      if (!user) {
+        errorHandler(errorName.UNAUTHORIZED);
+      }
 
       const userById = await User.findByPk(id);
 
       if (!userById) {
-        throw new Error("No user with that id");
+        errorHandler(errorName.NO_USER_WITH_THAT_ID);
       }
 
       return userById;
     },
-    async currentUser(root, {}, { user }) {
-      checkAuthenticated(user);
+    async currentUser(root, {}, { user, errorName }) {
+      if (!user) {
+        errorHandler(errorName.UNAUTHORIZED);
+      }
 
       return user;
     }
   },
 
   Mutation: {
-    async signup(root, { firstName, secondName, email, password }) {
+    async signup(
+      root,
+      { firstName, secondName, email, password },
+      { errorName }
+    ) {
       const userWithEmail = await User.findOne({ where: { email } });
 
       if (userWithEmail) {
-        throw new Error("This email is already registered.");
+        errorHandler(errorName.EMAIL_IS_ALREADY_REGISTERED);
       }
 
       const user = await User.create({
@@ -49,7 +57,7 @@ const resolvers = {
       });
 
       if (!email.includes("@")) {
-        throw new Error("invalid email");
+        errorHandler(errorName.INVALID_EMAIL);
       }
 
       return jsonwebtoken.sign(
@@ -66,13 +74,13 @@ const resolvers = {
       const user = await User.findOne({ where: { email } });
 
       if (!user) {
-        throw new Error("No user with that email");
+        errorHandler(errorName.NO_USER_WITH_THAT_EMAIL);
       }
 
       const valid = await bcrypt.compare(password, user.password);
 
       if (!valid) {
-        throw new Error("Incorrect password");
+        errorHandler(errorName.INCORRECT_PASSWORD);
       }
 
       return {
@@ -91,18 +99,20 @@ const resolvers = {
     async editUser(
       root,
       { id, email, firstName, secondName, password },
-      { user }
+      { user, errorName }
     ) {
-      checkAuthenticated(user);
+      if (!user) {
+        errorHandler(errorName.UNAUTHORIZED);
+      }
 
       if (!email.includes("@")) {
-        throw new Error("invalid email");
+        errorHandler(errorName.INVALID_EMAIL);
       }
 
       const userById = await User.findByPk(id);
 
       if (!userById) {
-        throw new Error("No user found");
+        errorHandler(errorName.NO_USER_FOUND);
       }
 
       await userById.update({
