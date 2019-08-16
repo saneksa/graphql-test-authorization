@@ -38,6 +38,15 @@ const resolvers = {
       const currentUser = await User.findById(user.id);
 
       return currentUser;
+    },
+    async processList(root, {}, { user, errorName }) {
+      if (!user) {
+        errorHandler(errorName.UNAUTHORIZED);
+      }
+
+      const jsonData = require("./processesList.json");
+
+      return jsonData;
     }
   },
 
