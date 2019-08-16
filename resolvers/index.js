@@ -20,8 +20,7 @@ const resolvers = {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      await checkAuthenticated(user);
-      const userById = await User.findById(id);
+      const userById = await User.findByPk(id);
 
       if (!userById) {
         errorHandler(errorName.NO_USER_WITH_THAT_ID);
@@ -34,18 +33,7 @@ const resolvers = {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      await checkAuthenticated(user);
-
-      const currentUser = await User.findById(user.id);
-
-      return currentUser;
-    },
-    async processList(root, {}, { user }) {
-      await checkAuthenticated(user);
-
-      const jsonData = require("./processesList.json");
-
-      return jsonData;
+      return user;
     }
   },
 
@@ -61,16 +49,16 @@ const resolvers = {
         errorHandler(errorName.EMAIL_IS_ALREADY_REGISTERED);
       }
 
+      if (!email.includes("@")) {
+        errorHandler(errorName.INVALID_EMAIL);
+      }
+
       const user = await User.create({
         firstName,
         secondName,
         email,
         password: await bcrypt.hash(password, 10)
       });
-
-      if (!email.includes("@")) {
-        errorHandler(errorName.INVALID_EMAIL);
-      }
 
       return jsonwebtoken.sign(
         {
@@ -121,7 +109,7 @@ const resolvers = {
         errorHandler(errorName.INVALID_EMAIL);
       }
 
-      const userById = await User.findById(id);
+      const userById = await User.findByPk(id);
 
       if (!userById) {
         errorHandler(errorName.NO_USER_FOUND);
@@ -131,7 +119,7 @@ const resolvers = {
         email,
         firstName,
         secondName,
-        password: password ? await bcrypt.hash(password, 10) : undefined
+        password: await bcrypt.hash(password, 10)
       });
 
       return userById;
