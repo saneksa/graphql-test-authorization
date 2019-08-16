@@ -33,7 +33,9 @@ const resolvers = {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      return user;
+      const currentUser = await User.findById(user.id);
+
+      return currentUser;
     }
   },
 
