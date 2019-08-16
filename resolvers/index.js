@@ -20,7 +20,8 @@ const resolvers = {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      const userById = await User.findByPk(id);
+      await checkAuthenticated(user);
+      const userById = await User.findById(id);
 
       if (!userById) {
         errorHandler(errorName.NO_USER_WITH_THAT_ID);
@@ -33,7 +34,18 @@ const resolvers = {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      return user;
+      await checkAuthenticated(user);
+
+      const currentUser = await User.findById(user.id);
+
+      return currentUser;
+    },
+    async processList(root, {}, { user }) {
+      await checkAuthenticated(user);
+
+      const jsonData = require("./processesList.json");
+
+      return jsonData;
     }
   },
 
@@ -109,7 +121,7 @@ const resolvers = {
         errorHandler(errorName.INVALID_EMAIL);
       }
 
-      const userById = await User.findByPk(id);
+      const userById = await User.findById(id);
 
       if (!userById) {
         errorHandler(errorName.NO_USER_FOUND);
@@ -119,7 +131,7 @@ const resolvers = {
         email,
         firstName,
         secondName,
-        password: await bcrypt.hash(password, 10)
+        password: password ? await bcrypt.hash(password, 10) : undefined
       });
 
       return userById;
