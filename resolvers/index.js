@@ -1,6 +1,8 @@
 const { User } = require("../models");
 const bcrypt = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
+const { isEmpty, isString } = require("lodash");
+
 require("dotenv").config();
 
 const errorHandler = error => {
@@ -20,7 +22,7 @@ const resolvers = {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      const userById = await User.findByPk(id);
+      const userById = await User.findById(id);
 
       if (!userById) {
         errorHandler(errorName.NO_USER_WITH_THAT_ID);
@@ -72,7 +74,7 @@ const resolvers = {
       );
     },
 
-    async login(root, { email, password }) {
+    async login(root, { email, password }, { errorName }) {
       const user = await User.findOne({ where: { email } });
 
       if (!user) {
@@ -111,17 +113,23 @@ const resolvers = {
         errorHandler(errorName.INVALID_EMAIL);
       }
 
-      const userById = await User.findByPk(id);
+      const userById = await User.findById(id);
 
       if (!userById) {
         errorHandler(errorName.NO_USER_FOUND);
       }
 
+      if (isString(password) && isEmpty(password)) {
+        errorHandler(errorName.INCORRECT_PASSWORD);
+      }
+
+      const pass = password ? await bcrypt.hash(password, 10) : undefined;
+
       await userById.update({
         email,
         firstName,
         secondName,
-        password: await bcrypt.hash(password, 10)
+        password: pass
       });
 
       return userById;

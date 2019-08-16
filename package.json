@@ -19,7 +19,8 @@
     "jsonwebtoken": "^8.5.1",
     "sequelize": "=4.39.0",
     "sqlite3": "^4.0.9",
-    "easygraphql-format-error": "0.0.3"
+    "easygraphql-format-error": "0.0.3",
+    "lodash": "4.17.15"
   },
   "devDependencies": {
     "nodemon": "^1.19.1",
