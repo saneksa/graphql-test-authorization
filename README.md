@@ -11,13 +11,13 @@ git clone https://github.com/saneksa/graphql-test-authorization.git
 After cloning, run:
 
 ```bash
-npm install
+npm install 
 ```
 
 Then run the migration:
 
 ```bash
-node_modules/.bin/sequelize db:migrate
+npm run migrate
 ```
 
 And finally, start the application:
