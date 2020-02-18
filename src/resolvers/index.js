@@ -44,7 +44,7 @@ const resolvers = {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      const jsonData = require("./processesList.json");
+      const jsonData = require("./processesList.json.js");
 
       return jsonData;
     }
