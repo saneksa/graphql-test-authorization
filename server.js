@@ -1,10 +1,11 @@
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
-const jwt = require("express-jwt");
+const cors = require("cors");
 require("dotenv").config();
 const typeDefs = require("./schemas");
 const resolvers = require("./resolvers");
 const formatError = require("./errors");
+const { verifyJWT_MW } = require("./utils");
 
 const port = 4000;
 const path = "/api";
@@ -12,13 +13,9 @@ const app = express();
 
 const errorName = formatError.errorName;
 
-app.use(
-  path,
-  jwt({
-    secret: process.env.JWT_SECRET,
-    credentialsRequired: false
-  })
-);
+app.use(cors());
+
+app.use(verifyJWT_MW);
 
 const server = new ApolloServer({
   typeDefs,

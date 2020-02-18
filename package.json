@@ -21,7 +21,8 @@
     "sequelize": "4.39.0",
     "sqlite3": "4.1.0",
     "easygraphql-format-error": "0.0.3",
-    "lodash": "4.17.15"
+    "lodash": "4.17.15",
+    "cors": "=2.8.5"
   },
   "devDependencies": {
     "nodemon": "=1.19.4",
