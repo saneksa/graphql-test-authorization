@@ -21,7 +21,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context: ({ req }) => ({
-    user: req.user,
+    user: req.decodedToken,
     errorName
   }),
   formatError: err => {
