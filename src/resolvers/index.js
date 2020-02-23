@@ -2,6 +2,7 @@ const { User } = require("../models");
 const bcrypt = require("bcryptjs");
 const jsonwebtoken = require("jsonwebtoken");
 const { isEmpty, isString } = require("lodash");
+const path = require("path");
 
 require("dotenv").config();
 
@@ -44,7 +45,7 @@ const resolvers = {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      const jsonData = require("./processesList.json.js");
+      const jsonData = require(path.resolve(__dirname, "processesList.json"));
 
       return jsonData;
     }
