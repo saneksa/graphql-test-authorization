@@ -20,19 +20,19 @@ const typeDefs = gql`
     "Значения в ms"
     averageLeadTime: String
     "Значения в ms"
-		averageActiveTime: String
-		employeesInvolvedProcess: Int
-		numberOfScenarios: Int
-		start: String
-		end: String
-		loading: String
+    averageActiveTime: String
+    employeesInvolvedProcess: Int
+    numberOfScenarios: Int
+    start: String
+    end: String
+    loading: String
   }
 
   type Query {
     allUsers: [User]!
     userById(id: Int!): User
-    currentUser: User,
-    processList:[Process]!
+    currentUser: User
+    processList: [Process]!
   }
 
   type Mutation {

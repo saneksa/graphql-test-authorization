@@ -22,11 +22,11 @@ const server = new ApolloServer({
   resolvers,
   context: ({ req }) => ({
     user: req.decodedToken,
-    errorName
+    errorName,
   }),
-  formatError: err => {
+  formatError: (err) => {
     return formatError.getError(err);
-  }
+  },
 });
 
 server.applyMiddleware({ app, path });
