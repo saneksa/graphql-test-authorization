@@ -6,7 +6,7 @@ const path = require("path");
 
 require("dotenv").config();
 
-const errorHandler = error => {
+const errorHandler = (error) => {
   throw new Error(error);
 };
 
@@ -16,14 +16,14 @@ const resolvers = {
       if (!user) {
         errorHandler(errorName.UNAUTHORIZED);
       }
-      return User.all();
+      return User.findAll();
     },
     async userById(root, { id }, { user, errorName }) {
       if (!user) {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      const userById = await User.findById(id);
+      const userById = await User.findByPk(id);
 
       if (!userById) {
         errorHandler(errorName.NO_USER_WITH_THAT_ID);
@@ -36,7 +36,7 @@ const resolvers = {
         errorHandler(errorName.UNAUTHORIZED);
       }
 
-      const currentUser = await User.findById(user.id);
+      const currentUser = await User.findByPk(user.id);
 
       return currentUser;
     },
@@ -48,7 +48,7 @@ const resolvers = {
       const jsonData = require(path.resolve(__dirname, "processesList.json"));
 
       return jsonData;
-    }
+    },
   },
 
   Mutation: {
@@ -71,13 +71,13 @@ const resolvers = {
         firstName,
         secondName,
         email,
-        password: await bcrypt.hash(password, 10)
+        password: await bcrypt.hash(password, 10),
       });
 
       return jsonwebtoken.sign(
         {
           id: user.id,
-          email: user.email
+          email: user.email,
         },
         process.env.JWT_SECRET,
         { expiresIn: "1y" }
@@ -101,12 +101,12 @@ const resolvers = {
         token: jsonwebtoken.sign(
           {
             id: user.id,
-            email: user.email
+            email: user.email,
           },
           process.env.JWT_SECRET,
           { expiresIn: "1y" }
         ),
-        user
+        user,
       };
     },
 
@@ -123,7 +123,7 @@ const resolvers = {
         errorHandler(errorName.INVALID_EMAIL);
       }
 
-      const userById = await User.findById(id);
+      const userById = await User.findByPk(id);
 
       if (!userById) {
         errorHandler(errorName.NO_USER_FOUND);
@@ -139,12 +139,12 @@ const resolvers = {
         email,
         firstName,
         secondName,
-        password: pass
+        password: pass,
       });
 
       return userById;
-    }
-  }
+    },
+  },
 };
 
 module.exports = resolvers;
